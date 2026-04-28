@@ -1,0 +1,28 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+.env
+.venv
+env/
+build/
+dist/
+
+# Databases
+*.db
+*.sqlite3
+
+# IDEs
+.vscode/
+.idea/
+
+# Node 
+node_modules/
+dist/
+dist-ssr/
+*.local
+.eslintcache
+
+# Logs
+*.log
