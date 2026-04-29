@@ -1,0 +1,40 @@
+@import "tailwindcss";
+
+@theme {
+  --color-agro-brown: #4A3F35;
+  --color-agro-bege: #EDE0D4;
+  --color-agro-sand: #D6CCC2;
+  --color-agro-wine: #7F5539;
+  --color-agro-gray: #6C757D;
+  --font-serif: "Playfair Display", serif;
+  --font-sans: "Inter", sans-serif;
+  --radius-agro: 8px;
+
+  --animate-bounce-slow: bounce-slow 4s infinite;
+
+  @keyframes bounce-slow {
+    0%, 100% {
+      transform: translateY(-5%);
+      animation-timing-function: cubic-bezier(0.8, 0, 1, 1);
+    }
+    50% {
+      transform: translateY(0);
+      animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
+    }
+  }
+}
+
+@layer base {
+  body {
+    @apply bg-agro-bege text-agro-brown font-sans antialiased;
+  }
+  h1, h2, h3, h4 {
+    @apply font-serif;
+  }
+}
+
+html, body, #root {
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+}

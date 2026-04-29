@@ -1,10 +1,9 @@
 from fastapi import FastAPI, Depends, HTTPException
-from .database import engine, Base
-from . import models
-from .routers import auth, clients, services, appointments
+from database import engine, Base
+import models
+from routers import auth, clients, services, appointments
 
-# Note: In production, it's better to use Alembic for migrations
-models.Base.metadata.create_all(bind=engine)
+Base.metadata.create_all(bind=engine)
 
 app = FastAPI(title="AgroAgenda API")
 
