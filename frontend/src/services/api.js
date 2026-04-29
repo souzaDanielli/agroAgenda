@@ -6,7 +6,7 @@ const api = axios.create({
   baseURL: API_URL,
 });
 
-// Add token to requests if available
+
 api.interceptors.request.use((config) => {
   const token = localStorage.getItem('agro_token');
   if (token) {
@@ -30,9 +30,9 @@ export const authService = {
   },
 
   async register(userData) {
-    const response = await api.post('/auth/register', {
+    const response = await api.post('/auth/signup', {
       email: userData.email,
-      full_name: userData.name,
+      name: userData.name,
       password: userData.password
     });
     return response.data;
