@@ -118,7 +118,7 @@ const Register = () => {
           <button 
             type="submit" 
             disabled={loading}
-            className="w-full bg-agro-wine text-agro-bege py-5 rounded-2xl font-bold hover:opacity-90 transition-all shadow-xl shadow-agro-wine/10 flex items-center justify-center space-x-2 disabled:opacity-70 mt-4"
+            className="w-full bg-agro-wine text-agro-bege py-5 rounded-2xl font-bold hover:opacity-90 transition-all shadow-xl shadow-agro-wine/10 flex items-center justify-center space-x-2 disabled:opacity-70 mt-4 cursor-pointer disabled:cursor-not-allowed"
           >
             {loading ? <Loader2 className="animate-spin" size={20} /> : (
               <>

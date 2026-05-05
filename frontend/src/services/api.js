@@ -25,6 +25,7 @@ export const authService = {
     const response = await api.post('/auth/login', formData);
     if (response.data.access_token) {
       localStorage.setItem('agro_token', response.data.access_token);
+      localStorage.setItem('agro_user', JSON.stringify({ name: response.data.user_name, email: email}));
     }
     return response.data;
   },
@@ -40,6 +41,34 @@ export const authService = {
 
   logout() {
     localStorage.removeItem('agro_token');
+  }
+};
+
+export const agendaService = {
+  async getTodayAppointments() {
+    const today = new Date().toISOString().split('T')[0];
+    const response = await api.get(`/appointments/?date=${today}`);
+    return response.data;
+  },
+  async getClients() {
+    const response = await api.get('/clients/');
+    return response.data;
+  },
+  async getServices() {
+    const response = await api.get('/services/');
+    return response.data;
+  },
+  async createClient(data) {
+    const response = await api.post('/clients/', data);
+    return response.data;
+  },
+  async updateClient(id, data) {
+    const response = await api.put(`/clients/${id}`, data);
+    return response.data;
+  },
+  async createAppointment(data) {
+    const response = await api.post('/appointments/', data);
+    return response.data;
   }
 };
 

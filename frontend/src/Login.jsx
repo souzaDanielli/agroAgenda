@@ -17,9 +17,7 @@ const Login = () => {
     
     try {
       await authService.login(email, password);
-      // In a real app, you would redirect to a Dashboard
-      alert('Login realizado com sucesso!');
-      navigate('/'); 
+      navigate('/home'); 
     } catch (err) {
       console.error(err);
       setError(err.response?.data?.detail || 'Falha na autenticação. Verifique suas credenciais.');
@@ -83,7 +81,7 @@ const Login = () => {
           <button 
             type="submit" 
             disabled={loading}
-            className="w-full bg-agro-brown text-agro-bege py-5 rounded-2xl font-bold hover:bg-agro-wine transition-all shadow-xl shadow-agro-brown/10 flex items-center justify-center space-x-2 disabled:opacity-70"
+            className="w-full bg-agro-brown text-agro-bege py-5 rounded-2xl font-bold hover:bg-agro-wine transition-all shadow-xl shadow-agro-brown/10 flex items-center justify-center space-x-2 disabled:opacity-70 cursor-pointer disabled:cursor-not-allowed"
           >
             {loading ? <Loader2 className="animate-spin" size={20} /> : (
               <>
