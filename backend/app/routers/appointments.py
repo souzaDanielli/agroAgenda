@@ -31,3 +31,75 @@ def read_appointments(
     current_user: models.User = Depends(auth.get_current_user)
 ):
     return crud.get_appointments(db, user_id=current_user.id, date=date)
+
+@router.patch("/{appointment_id}", response_model=schemas.AppointmentDisplay)
+def update_appointment_status(
+    appointment_id: int,
+    appointment_update: schemas.AppointmentUpdate,
+    db: Session = Depends(get_db),
+    current_user: models.User = Depends(auth.get_current_user)
+):
+    from sqlalchemy.orm import joinedload
+    db_appointment = db.query(models.Appointment).filter(
+        models.Appointment.id == appointment_id, 
+        models.Appointment.user_id == current_user.id
+    ).first()
+    
+    if not db_appointment:
+        raise HTTPException(status_code=404, detail="Agendamento não encontrado")
+    
+    db_appointment.status = appointment_update.status
+    db.commit()
+    db.refresh(db_appointment)
+    
+    # Recarregar com relacionamentos para o response_model
+    return db.query(models.Appointment).options(
+        joinedload(models.Appointment.client),
+        joinedload(models.Appointment.service)
+    ).filter(models.Appointment.id == appointment_id).first()
+
+@router.delete("/{appointment_id}")
+def delete_appointment(
+    appointment_id: int,
+    db: Session = Depends(get_db),
+    current_user: models.User = Depends(auth.get_current_user)
+):
+    db_appointment = db.query(models.Appointment).filter(
+        models.Appointment.id == appointment_id, 
+        models.Appointment.user_id == current_user.id
+    ).first()
+    
+    if not db_appointment:
+        raise HTTPException(status_code=404, detail="Agendamento não encontrado")
+    
+    db.delete(db_appointment)
+    db.commit()
+    return {"message": "Agendamento excluído com sucesso"}
+
+@router.put("/{appointment_id}", response_model=schemas.AppointmentDisplay)
+def update_appointment(
+    appointment_id: int,
+    appointment: schemas.AppointmentCreate,
+    db: Session = Depends(get_db),
+    current_user: models.User = Depends(auth.get_current_user)
+):
+    from sqlalchemy.orm import joinedload
+    db_appointment = db.query(models.Appointment).filter(
+        models.Appointment.id == appointment_id, 
+        models.Appointment.user_id == current_user.id
+    ).first()
+    
+    if not db_appointment:
+        raise HTTPException(status_code=404, detail="Agendamento não encontrado")
+    
+    # Atualizar campos
+    for key, value in appointment.model_dump().items():
+        setattr(db_appointment, key, value)
+    
+    db.commit()
+    db.refresh(db_appointment)
+    
+    return db.query(models.Appointment).options(
+        joinedload(models.Appointment.client),
+        joinedload(models.Appointment.service)
+    ).filter(models.Appointment.id == appointment_id).first()

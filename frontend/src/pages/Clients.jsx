@@ -6,7 +6,7 @@ import {
   Phone, 
   MapPin, 
   Edit2, 
-  Eye, 
+  Trash2, 
   Loader2,
   Users
 } from 'lucide-react';
@@ -15,7 +15,7 @@ import { agendaService } from '../services/api';
 import ClientModal from '../components/Modals/ClientModal';
 import NewAppointmentModal from '../components/Modals/NewAppointmentModal';
 
-const ClientItem = ({ client, onEdit }) => (
+const ClientItem = ({ client, onEdit, onDelete }) => (
   <tr className="hover:bg-agro-bege/5 transition-colors group">
     <td className="px-8 py-6">
       <div className="flex items-center gap-4">
@@ -57,10 +57,11 @@ const ClientItem = ({ client, onEdit }) => (
           <Edit2 size={18} />
         </button>
         <button 
-          className="p-2 text-agro-sand hover:text-agro-wine transition-colors hover:bg-white rounded-lg shadow-sm"
-          title="Ver Detalhes"
+          onClick={() => onDelete(client.id)}
+          className="p-2 text-agro-sand hover:text-red-500 transition-colors hover:bg-white rounded-lg shadow-sm"
+          title="Excluir"
         >
-          <Eye size={18} />
+          <Trash2 size={18} />
         </button>
       </div>
     </td>
@@ -107,6 +108,18 @@ const Clients = () => {
     setIsClientModalOpen(true);
   };
 
+  const handleDelete = async (id) => {
+    if (window.confirm('Tem certeza que deseja excluir este cliente?')) {
+      try {
+        await agendaService.deleteClient(id);
+        fetchClients();
+      } catch (err) {
+        console.error("Erro ao excluir:", err);
+        alert("Não foi possível excluir o cliente.");
+      }
+    }
+  };
+
   return (
     <div className="min-h-screen bg-agro-bege flex">
       <Sidebar onNewAppointment={() => setIsApptModalOpen(true)} />
@@ -120,7 +133,7 @@ const Clients = () => {
             </div>
             <button 
               onClick={handleCreate}
-              className="bg-agro-wine text-white px-6 py-3 rounded-xl font-bold shadow-lg flex items-center gap-2 hover:opacity-90 transition-all"
+              className="bg-agro-wine text-white px-6 py-3 rounded-xl font-bold shadow-lg flex items-center gap-2 hover:opacity-90 transition-all cursor-pointer"
             >
               <Plus size={20} />
               Novo Cliente
@@ -165,6 +178,7 @@ const Clients = () => {
                         key={client.id} 
                         client={client} 
                         onEdit={handleEdit}
+                        onDelete={handleDelete}
                       />
                     ))
                   ) : (

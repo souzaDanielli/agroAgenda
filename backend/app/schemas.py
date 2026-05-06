@@ -63,8 +63,13 @@ class AppointmentBase(BaseModel):
 class AppointmentCreate(AppointmentBase):
     pass
 
+class AppointmentUpdate(BaseModel):
+    status: str
+
 class AppointmentDisplay(AppointmentBase):
     id: int
     user_id: int
+    client: ClientDisplay
+    service: ServiceDisplay
     class Config:
         from_attributes = True

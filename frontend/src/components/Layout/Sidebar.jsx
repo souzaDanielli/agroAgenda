@@ -39,7 +39,7 @@ const Sidebar = ({ onNewAppointment }) => {
       <div className="px-4 mb-8">
         <button 
           onClick={onNewAppointment}
-          className="w-full bg-agro-wine hover:opacity-90 text-white flex items-center justify-center gap-2 py-3 rounded-xl font-bold transition-all shadow-lg active:scale-95"
+          className="w-full bg-agro-wine hover:opacity-90 text-white flex items-center justify-center gap-2 py-3 rounded-xl font-bold transition-all shadow-lg active:scale-95 cursor-pointer"
         >
           <Plus size={18} />
           <span>Novo agendamento</span>
@@ -63,17 +63,11 @@ const Sidebar = ({ onNewAppointment }) => {
       </nav>
 
       <div className="p-4 border-t border-white/10 space-y-1 mt-auto">
-        <NavLink
-            to="/settings"
-            className={({ isActive }) => (isActive ? activeStyle : inactiveStyle)}
-          >
-          <Settings size={20} />
-          <span className="font-medium">Configurações</span>
-        </NavLink>
+        
         
         <button 
           onClick={handleLogout}
-          className="w-full flex items-center gap-3 px-4 py-3 text-red-300 hover:bg-red-500/10 transition-all rounded-md"
+          className="w-full flex items-center gap-3 px-4 py-3 text-red-300 hover:bg-red-500/10 transition-all rounded-md cursor-pointer"
         >
           <LogOut size={20} />
           <span className="font-medium">Sair</span>

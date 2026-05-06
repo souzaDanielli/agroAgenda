@@ -20,3 +20,21 @@ def read_services(
     current_user: models.User = Depends(auth.get_current_user)
 ):
     return crud.get_services(db, user_id=current_user.id)
+
+@router.delete("/{service_id}")
+def delete_service(
+    service_id: int,
+    db: Session = Depends(get_db),
+    current_user: models.User = Depends(auth.get_current_user)
+):
+    db_service = db.query(models.Service).filter(
+        models.Service.id == service_id, 
+        models.Service.user_id == current_user.id
+    ).first()
+    
+    if not db_service:
+        raise HTTPException(status_code=404, detail="Serviço não encontrado")
+    
+    db.delete(db_service)
+    db.commit()
+    return {"message": "Serviço excluído com sucesso"}

@@ -14,10 +14,12 @@ const TimelineItem = ({ appt }) => {
   const statusConfig = {
     'pendente': { color: 'bg-amber-100 text-amber-700 border-amber-200', label: 'Pendente' },
     'em andamento': { color: 'bg-blue-100 text-blue-700 border-blue-200', label: 'Em andamento' },
-    'concluido': { color: 'bg-green-100 text-green-700 border-green-200', label: 'Concluído' }
+    'concluido': { color: 'bg-green-100 text-green-700 border-green-200', label: 'Concluído' },
+    'concluído': { color: 'bg-green-100 text-green-700 border-green-200', label: 'Concluído' },
+    'cancelado': { color: 'bg-red-100 text-red-700 border-red-200', label: 'Cancelado' }
   };
 
-  const config = statusConfig[appt.status] || statusConfig.pendente;
+  const config = statusConfig[appt.status.toLowerCase()] || statusConfig.pendente;
 
   return (
     <div className="flex gap-4 group">
@@ -63,13 +65,15 @@ const Home = () => {
         agendaService.getServices()
       ]);
       
-      const formattedAppts = appts.map(a => ({
-        id: a.id,
-        time: new Date(a.appointment_date).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' }),
-        title: a.description || 'Visita Técnica',
-        subtitle: `${a.client?.name || 'Cliente'} • ${a.service?.name || 'Serviço'}`,
-        status: a.status || 'pendente'
-      }));
+      const formattedAppts = appts
+        .filter(a => a.status !== 'cancelado' && a.status !== 'concluído')
+        .map(a => ({
+          id: a.id,
+          time: new Date(a.appointment_date).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' }),
+          title: a.service?.name || 'Visita Técnica',
+          subtitle: `${a.client?.name || 'Cliente'} • ${a.observations || 'Sem observações'}`,
+          status: a.status || 'pendente'
+        }));
 
       setAppointments(formattedAppts);
       setStats({ clients: clients.length, services: services.length });
@@ -114,7 +118,7 @@ const Home = () => {
           <header className="mb-10">
             <h2 className="text-agro-gray font-bold uppercase tracking-widest text-xs mb-2">Painel de Controle</h2>
             <h1 className="text-3xl font-serif font-bold text-agro-brown italic">
-              Olá, {userName || 'Produtor'}! <span className="text-agro-wine font-sans not-italic text-lg ml-2 font-medium bg-white px-4 py-1 rounded-full shadow-sm">Você tem {appointments.length} atendimentos hoje</span>
+              Olá, {userName || 'Produtor'}! 
             </h1>
           </header>
 

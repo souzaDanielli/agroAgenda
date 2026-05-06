@@ -132,14 +132,14 @@ const ClientModal = ({ isOpen, onClose, onSuccess, initialData = null }) => {
             <button
               type="button"
               onClick={onClose}
-              className="flex-1 px-6 py-4 rounded-2xl font-bold text-agro-gray hover:bg-agro-sand/10 transition-colors"
+              className="flex-1 px-6 py-4 rounded-2xl font-bold text-agro-gray hover:bg-agro-sand/10 transition-colors cursor-pointer"
             >
               Cancelar
             </button>
             <button
               type="submit"
               disabled={submitting}
-              className="flex-1 bg-agro-wine text-white px-6 py-4 rounded-2xl font-bold shadow-lg hover:opacity-90 transition-all flex items-center justify-center gap-2 disabled:opacity-50"
+              className="flex-1 bg-agro-wine text-white px-6 py-4 rounded-2xl font-bold shadow-lg hover:opacity-90 transition-all flex items-center justify-center gap-2 disabled:opacity-50 cursor-pointer"
             >
               {submitting ? <Loader2 className="animate-spin" size={20} /> : (initialData ? "Salvar" : "Cadastrar")}
             </button>

@@ -69,6 +69,30 @@ export const agendaService = {
   async createAppointment(data) {
     const response = await api.post('/appointments/', data);
     return response.data;
+  },
+  async updateAppointment(id, data) {
+    const response = await api.put(`/appointments/${id}`, data);
+    return response.data;
+  },
+  async createService(data) {
+    const response = await api.post('/services/', data);
+    return response.data;
+  },
+  async updateService(id, data) {
+    const response = await api.put(`/services/${id}`, data);
+    return response.data;
+  },
+  async deleteClient(id) {
+    const response = await api.delete(`/clients/${id}`);
+    return response.data;
+  },
+  async deleteService(id) {
+    const response = await api.delete(`/services/${id}`);
+    return response.data;
+  },
+  async deleteAppointment(id) {
+    const response = await api.delete(`/appointments/${id}`);
+    return response.data;
   }
 };
 

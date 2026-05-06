@@ -39,7 +39,11 @@ def create_service(db: Session, service: schemas.ServiceCreate, user_id: int):
 
 # Appointments
 def get_appointments(db: Session, user_id: int, date=None):
-    query = db.query(models.Appointment).filter(models.Appointment.user_id == user_id)
+    from sqlalchemy.orm import joinedload
+    query = db.query(models.Appointment).options(
+        joinedload(models.Appointment.client),
+        joinedload(models.Appointment.service)
+    ).filter(models.Appointment.user_id == user_id)
     if date:
         import datetime
         day_start = datetime.datetime.combine(date, datetime.time.min)
@@ -53,4 +57,8 @@ def create_appointment(db: Session, appointment: schemas.AppointmentCreate, user
     db.add(db_appointment)
     db.commit()
     db.refresh(db_appointment)
-    return db_appointment
+    # Recarregar com os relacionamentos para retorno consistente com AppointmentDisplay
+    return db.query(models.Appointment).options(
+        joinedload(models.Appointment.client),
+        joinedload(models.Appointment.service)
+    ).filter(models.Appointment.id == db_appointment.id).first()

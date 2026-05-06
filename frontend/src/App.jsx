@@ -6,6 +6,7 @@ import Register from './Register';
 import Home from './pages/Home';
 import Appointments from './pages/Appointments';
 import Clients from './pages/Clients';
+import Services from './pages/Services';
 import './index.css';
 
 // Componente simples para proteger rotas
@@ -42,6 +43,14 @@ function App() {
           element={
             <PrivateRoute>
               <Clients />
+            </PrivateRoute>
+          } 
+        />
+        <Route 
+          path="/services" 
+          element={
+            <PrivateRoute>
+              <Services />
             </PrivateRoute>
           } 
         />
