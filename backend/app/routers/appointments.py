@@ -1,5 +1,5 @@
 from fastapi import APIRouter, Depends, HTTPException
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, joinedload
 from typing import List, Optional
 from datetime import date
 from .. import crud, schemas, models, auth
@@ -39,7 +39,6 @@ def update_appointment_status(
     db: Session = Depends(get_db),
     current_user: models.User = Depends(auth.get_current_user)
 ):
-    from sqlalchemy.orm import joinedload
     db_appointment = db.query(models.Appointment).filter(
         models.Appointment.id == appointment_id, 
         models.Appointment.user_id == current_user.id
@@ -83,7 +82,6 @@ def update_appointment(
     db: Session = Depends(get_db),
     current_user: models.User = Depends(auth.get_current_user)
 ):
-    from sqlalchemy.orm import joinedload
     db_appointment = db.query(models.Appointment).filter(
         models.Appointment.id == appointment_id, 
         models.Appointment.user_id == current_user.id

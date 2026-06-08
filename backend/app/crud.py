@@ -1,4 +1,5 @@
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, joinedload
+import datetime
 from . import models, schemas, auth
 
 def get_user_by_email(db: Session, email: str):
@@ -39,13 +40,11 @@ def create_service(db: Session, service: schemas.ServiceCreate, user_id: int):
 
 # Appointments
 def get_appointments(db: Session, user_id: int, date=None):
-    from sqlalchemy.orm import joinedload
     query = db.query(models.Appointment).options(
         joinedload(models.Appointment.client),
         joinedload(models.Appointment.service)
     ).filter(models.Appointment.user_id == user_id)
     if date:
-        import datetime
         day_start = datetime.datetime.combine(date, datetime.time.min)
         day_end = datetime.datetime.combine(date, datetime.time.max)
         query = query.filter(models.Appointment.appointment_date >= day_start, 
